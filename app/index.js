@@ -8,6 +8,7 @@ var DigitariaGenerator = module.exports = function DigitariaGenerator(args, opti
 	yeoman.generators.Base.apply(this, arguments);
 
 	this.on('end', function () {
+		console.log('B');
 		this.installDependencies({ skipInstall: options['skip-install'] });
 	});
 
@@ -52,21 +53,59 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 		this.slugProjectName = this._.slugify(this.projectName);
 		this.version = props.version;
 		this.jqueryVersion = props.jqueryVersion;
+		this.repository = props.repository;
 		this.handlebars = props.handlebars;
 
 		cb();
 	}.bind(this));
 };
 
+// DigitariaGenerator.prototype.gruntfile = function () {
+// 	this.template('Gruntfile.js', 'Gruntfile.js');
+// };
+
+// DigitariaGenerator.prototype.git = function () {
+// 	this.copy('gitignore', '.gitignore');
+// };
+
+// DigitariaGenerator.prototype.jshint = function () {
+// 	this.copy('jshint', '.jshint');
+// };
+
+// DigitariaGenerator.prototype.editorconfig = function () {
+// 	this.copy('editorconfig', '.editorconfig');
+// };
+
+// DigitariaGenerator.prototype.sass = function () {
+// 	// create sass folder structure
+// 	// this.mkdir('css');
+// 	// this.mkdir('css/sass');
+// 	// this.mkdir('css/sass/buttons');
+//  //    this.mkdir('css/sass/forms');
+//  //    this.mkdir('css/sass/layouts');
+//  //    this.mkdir('css/sass/modules');
+//  //    this.mkdir('css/sass/typography');
+//  //    this.mkdir('css/sass/vendor');
+
+//     // copy sass default files
+//     this.directory('css', 'css');
+// };
+
+// DigitariaGenerator.prototype.js = function () {
+// 	this.mkdir('js');
+// 	this.mkdir('js');
+// };
+
 DigitariaGenerator.prototype.app = function app() {
 	this.mkdir('app');
 	this.mkdir('app/templates');
 
-	this.copy('_package.json', 'package.json');
-	this.copy('_bower.json', 'bower.json');
+	this.template('_package.json', 'package.json');
+	this.template('_bower.json', 'bower.json');
 };
 
-DigitariaGenerator.prototype.projectfiles = function projectfiles() {
-	this.copy('editorconfig', '.editorconfig');
-	this.copy('jshintrc', '.jshintrc');
-};
+// DigitariaGenerator.prototype.projectfiles = function projectfiles() {
+// 	console.log('A');
+// 	this.copy('editorconfig', '.editorconfig');
+// 	this.copy('jshintrc', '.jshintrc');
+// };

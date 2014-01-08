@@ -11,5 +11,7 @@
     "type": "git",
     "url": "<%= repository %>"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "grunt": "~0.4.2"
+  }
 }
