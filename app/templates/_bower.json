@@ -2,7 +2,7 @@
   "name": "<%= slugProjectName %>",
   "version": "<%= version %>",
   "dependencies": {
-    "jQuery": "~<%= jqueryVersion %>"
+    "jquery": "~<%= jqueryVersion %>"
   }
 }
 
