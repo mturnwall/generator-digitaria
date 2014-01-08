@@ -8,7 +8,7 @@ var DigitariaGenerator = module.exports = function DigitariaGenerator(args, opti
 	yeoman.generators.Base.apply(this, arguments);
 
 	this.on('end', function () {
-		// this.installDependencies({ skipInstall: options['skip-install'] });
+		this.installDependencies({ skipInstall: options['skip-install'] });
 	});
 
 	this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
@@ -90,13 +90,10 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 
 		// find out which libraries to include
 		this.includeJquery = hasLibrary('hasJquery');
-		this.includeModernzr = hasLibrary('hasModernzr');
+		this.includeModernizr = hasLibrary('hasModernizr');
 		this.includeUniform = hasLibrary('hasUniform');
 		this.includeHandlebars = hasLibrary('hasHandlebars');
-		console.log(this.includeJquery);
-		console.log(this.includeModernzr);
-		console.log(this.includeUniform);
-		console.log(this.includeHandlebars);
+
 		cb();
 	}.bind(this));
 };
@@ -116,47 +113,45 @@ DigitariaGenerator.prototype.compassConfig = function () {
 	this.template('_config.rb', 'config.rb');
 };
 
-// DigitariaGenerator.prototype.gruntfile = function () {
-// 	this.template('Gruntfile.js', 'Gruntfile.js');
-// };
+DigitariaGenerator.prototype.packageJSON = function () {
+	this.template('_package.json', 'package.json');
+};
 
-// DigitariaGenerator.prototype.git = function () {
-// 	this.copy('gitignore', '.gitignore');
-// };
+DigitariaGenerator.prototype.bower = function () {
+	this.template('_bower.json', 'bower.json');
+};
 
-// DigitariaGenerator.prototype.jshint = function () {
-// 	this.copy('jshint', '.jshint');
-// };
+DigitariaGenerator.prototype.gruntfile = function () {
+	this.template('Gruntfile.js', 'Gruntfile.js');
+};
 
-// DigitariaGenerator.prototype.editorconfig = function () {
-// 	this.copy('editorconfig', '.editorconfig');
-// };
+DigitariaGenerator.prototype.git = function () {
+	this.copy('gitignore', '.gitignore');
+};
 
-// DigitariaGenerator.prototype.sass = function () {
-// 	// create sass folder structure
-// 	// this.mkdir('css');
-// 	// this.mkdir('css/sass');
-// 	// this.mkdir('css/sass/buttons');
-//  //    this.mkdir('css/sass/forms');
-//  //    this.mkdir('css/sass/layouts');
-//  //    this.mkdir('css/sass/modules');
-//  //    this.mkdir('css/sass/typography');
-//  //    this.mkdir('css/sass/vendor');
+DigitariaGenerator.prototype.jshint = function () {
+	this.copy('jshintrc', '.jshintrc');
+};
 
-//     // copy sass default files
-//     this.directory('css', 'css');
-// };
+DigitariaGenerator.prototype.editorconfig = function () {
+	this.copy('editorconfig', '.editorconfig');
+};
+
+DigitariaGenerator.prototype.sass = function () {
+    // copy sass default files
+    this.directory('css', 'css');
+
+    // create folder structure
+	this.mkdir('css/sass/buttons');
+	this.mkdir('css/sass/forms');
+	this.mkdir('css/sass/layouts');
+	this.mkdir('css/sass/modules');
+	this.mkdir('css/sass/typography');
+	this.mkdir('css/sass/vendor');
+};
 
 // DigitariaGenerator.prototype.js = function () {
 // 	this.mkdir('js');
 // 	this.mkdir('js/vendor');
 // 	this.copy('js/name.js', 'js/' + this.slugProjectName + '.js');
-// };
-
-// DigitariaGenerator.prototype.app = function app() {
-// 	this.mkdir('app');
-// 	this.mkdir('app/templates');
-
-// 	this.template('_package.json', 'package.json');
-// 	this.template('_bower.json', 'bower.json');
 // };

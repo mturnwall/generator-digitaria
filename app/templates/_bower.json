@@ -2,7 +2,15 @@
   "name": "<%= slugProjectName %>",
   "version": "<%= version %>",
   "dependencies": {
-    "jquery": "~<%= jqueryVersion %>"
+    <% if (includeUniform) { %>
+    "jquery.uniform": "~2.1.2",
+    <% } %>
+    <% if (includeModernizr) { %>
+    "modernizr": "~2.7.1",
+    <% } %>
+    <% if (includeJquery) { %>
+    "jquery": "~1.10.2"
+    <% } %>
   }
 }
 
