@@ -1,15 +1,14 @@
 'use strict';
-var util = require('util');
-var path = require('path');
-var yeoman = require('yeoman-generator');
+var util = require('util'),
+	path = require('path'),
+	yeoman = require('yeoman-generator');
 
 
 var DigitariaGenerator = module.exports = function DigitariaGenerator(args, options, config) {
 	yeoman.generators.Base.apply(this, arguments);
 
 	this.on('end', function () {
-		console.log('B');
-		this.installDependencies({ skipInstall: options['skip-install'] });
+		// this.installDependencies({ skipInstall: options['skip-install'] });
 	});
 
 	this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
@@ -33,6 +32,21 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 		message: 'What is the version of the project?',
 		default: '0.1.0'
 	}, {
+		type: 'list',
+		name: 'projectType',
+		message: 'What type of project is this?',
+		choices: [{
+			name: 'Drupal',
+			value: 'isDrupal'
+		}, {
+			name: 'SiteCore',
+			value: 'isSitecore'
+		}, {
+			name: 'Generic',
+			value: 'isGeneric'
+		}],
+		default: 2
+	}, {
 		type: 'input',
 		name: 'jqueryVersion',
 		message: 'What version of jQuery?',
@@ -55,9 +69,25 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 		this.jqueryVersion = props.jqueryVersion;
 		this.repository = props.repository;
 		this.handlebars = props.handlebars;
-
+		this.projectType = props.projectType;
+		console.log(props);
 		cb();
 	}.bind(this));
+};
+
+DigitariaGenerator.prototype.compassConfig = function () {
+	var path;
+	switch (this.projectType) {
+		case 'isDrupal':
+			path = 'sites/all/themes/' + this.slugProjectName;
+			break;
+		case 'isSitecore':
+		case 'isGeneric':
+			path = '/';
+			break;
+	}
+	this.configRbPath = path;
+	this.template('_config.rb', 'config.rb');
 };
 
 // DigitariaGenerator.prototype.gruntfile = function () {
@@ -93,19 +123,14 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 
 // DigitariaGenerator.prototype.js = function () {
 // 	this.mkdir('js');
-// 	this.mkdir('js');
+// 	this.mkdir('js/vendor');
+// 	this.copy('js/name.js', 'js/' + this.slugProjectName + '.js');
 // };
 
-DigitariaGenerator.prototype.app = function app() {
-	this.mkdir('app');
-	this.mkdir('app/templates');
+// DigitariaGenerator.prototype.app = function app() {
+// 	this.mkdir('app');
+// 	this.mkdir('app/templates');
 
-	this.template('_package.json', 'package.json');
-	this.template('_bower.json', 'bower.json');
-};
-
-// DigitariaGenerator.prototype.projectfiles = function projectfiles() {
-// 	console.log('A');
-// 	this.copy('editorconfig', '.editorconfig');
-// 	this.copy('jshintrc', '.jshintrc');
+// 	this.template('_package.json', 'package.json');
+// 	this.template('_bower.json', 'bower.json');
 // };
