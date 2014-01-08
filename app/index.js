@@ -32,6 +32,10 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 		message: 'What is the version of the project?',
 		default: '0.1.0'
 	}, {
+		type: 'input',
+		name: 'repository',
+		message: 'What is the URL for the repository?'
+	}, {
 		type: 'list',
 		name: 'projectType',
 		message: 'What type of project is this?',
@@ -47,22 +51,35 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 		}],
 		default: 2
 	}, {
-		type: 'input',
-		name: 'jqueryVersion',
-		message: 'What version of jQuery?',
-		default: '1.10.2'
-	}, {
-		type: 'input',
-		name: 'repository',
-		message: 'What is the URL for the repository?'
-	}, {
-		type: 'confirm',
-		name: 'handlebars',
-		message: 'Are handlebars templates going to be used?',
-		default: false
+		type: 'checkbox',
+		name: 'libs',
+		message: 'Which libraries would you like to include?',
+		choices: [{
+			name: 'jQuery',
+			value: 'hasJquery',
+			checked: true
+		}, {
+			name: 'Modernizr',
+			value: 'hasModernizr',
+			checked: true
+		}, {
+			name: 'Uniform.js',
+			value: 'hasUniform',
+			checked: false
+		}, {
+			name: 'handlebars',
+			value: 'hasHandlebars',
+			checked: false
+		}]
 	}];
 
 	this.prompt(prompts, function (props) {
+		var libs = props.libs;
+
+		function hasLibrary(lib) {
+			return libs.indexOf(lib) !== -1;
+		}
+
 		this.projectName = props.projectName;
 		this.slugProjectName = this._.slugify(this.projectName);
 		this.version = props.version;
@@ -70,7 +87,16 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 		this.repository = props.repository;
 		this.handlebars = props.handlebars;
 		this.projectType = props.projectType;
-		console.log(props);
+
+		// find out which libraries to include
+		this.includeJquery = hasLibrary('hasJquery');
+		this.includeModernzr = hasLibrary('hasModernzr');
+		this.includeUniform = hasLibrary('hasUniform');
+		this.includeHandlebars = hasLibrary('hasHandlebars');
+		console.log(this.includeJquery);
+		console.log(this.includeModernzr);
+		console.log(this.includeUniform);
+		console.log(this.includeHandlebars);
 		cb();
 	}.bind(this));
 };
