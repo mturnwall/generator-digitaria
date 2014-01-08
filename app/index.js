@@ -23,15 +23,37 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 	console.log(this.yeoman);
 
 	var prompts = [{
+		type: 'input',
+		name: 'projectName',
+		message: 'What is the name of your project?'
+	}, {
+		type: 'input',
+		name: 'version',
+		message: 'What is the version of the project?',
+		default: '0.1.0'
+	}, {
+		type: 'input',
+		name: 'jqueryVersion',
+		message: 'What version of jQuery?',
+		default: '1.10.2'
+	}, {
+		type: 'input',
+		name: 'repository',
+		message: 'What is the URL for the repository?'
+	}, {
 		type: 'confirm',
-		name: 'someOption',
-		message: 'Would you like to enable this option?',
-		default: true
+		name: 'handlebars',
+		message: 'Are handlebars templates going to be used?',
+		default: false
 	}];
 
 	this.prompt(prompts, function (props) {
-		this.someOption = props.someOption;
-		console.log(props);
+		this.projectName = props.projectName;
+		this.slugProjectName = this._.slugify(this.projectName);
+		this.version = props.version;
+		this.jqueryVersion = props.jqueryVersion;
+		this.handlebars = props.handlebars;
+
 		cb();
 	}.bind(this));
 };
