@@ -29,7 +29,7 @@ module.exports = function (grunt) {
                 },
                 exported: ['trackingObj']
             },
-            files: ['js/tpr.js', 'js/product_*.js']
+            files: ['js/tpr.js', 'js/product_*.js', 'js/**/*.js']
         },
         compass: {
             options: {
@@ -108,7 +108,7 @@ module.exports = function (grunt) {
                 ]
             },
             scripts: {
-                files: ['<%= jshint.files %>'],
+                files: ['<%%= jshint.files %>'],
                 tasks: ['jshint']
             }
         },
