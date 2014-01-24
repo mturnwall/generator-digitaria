@@ -45,7 +45,7 @@ module.exports = function (grunt) {
                     environment: 'production'
                 }
             }
-        },{% if (handlebars) { %}
+        },<% if (handlebars) { %>
         handlebars: {
             compile: {
                 options: {
@@ -62,7 +62,7 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-        },{% } %}
+        },<% } %>
         imagemin: {
             png: {
                 options: {
@@ -95,11 +95,11 @@ module.exports = function (grunt) {
             css: {
                 files: ['css/sass/**/*.scss'],
                 tasks: ['compass:dev']
-            },{% if (handlebars) { %}
+            },<% if (handlebars) { %>
             handlebars: {
                 files: ['views/*.handlebars'],
                 tasks: ['handlebars:dev']
-            },{% } %}
+            },<% } %>
             scripts: {
                 files: ['<%= jshint.files %>'],
                 tasks: ['jshint']
@@ -114,7 +114,22 @@ module.exports = function (grunt) {
     // grunt.loadNpmTasks('grunt-contrib-jshint');
     // grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['jshint', 'compass:dev', 'handlebars']);
-    grunt.registerTask('build', 'Production ready code', ['clean', 'jshint', 'concat:build', 'compass:build', 'copy', 'imagemin']);
-    grunt.registerTask('image', 'compress PNGs', ['imagemin']);
+    grunt.registerTask('default', [
+        'jshint',
+        'compass:dev'<% if (handlebars) { %>,
+        'handlebars'<% } %>
+    ]);
+
+    grunt.registerTask('build', 'Production ready code', [
+        'clean',
+        'jshint',
+        'concat:build',
+        'compass:build',
+        'copy',
+        'imagemin'
+    ]);
+
+    grunt.registerTask('image', 'compress PNGs', [
+        'imagemin'
+    ]);
 };
