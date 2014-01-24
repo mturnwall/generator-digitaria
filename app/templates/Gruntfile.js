@@ -89,9 +89,6 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            options: {
-                atBegin: true
-            },
             css: {
                 files: ['css/sass/**/*.scss'],
                 tasks: ['compass:dev']
@@ -100,9 +97,33 @@ module.exports = function (grunt) {
                 files: ['views/*.handlebars'],
                 tasks: ['handlebars:dev']
             },<% } %>
+            livereload: {
+                options: {
+                    livereload: '<%%= connect.options.livereload %>'
+                },
+                files: [
+                    '{,*/}*.html',
+                    '{,*/}*.css',
+                    'images/**/*.{gif,jpeg,jpg,png,svg,webp}'
+                ]
+            },
             scripts: {
                 files: ['<%= jshint.files %>'],
                 tasks: ['jshint']
+            }
+        },
+        // grunt server settings
+        connect: {
+            options: {
+                port: 9000,
+                livereload: 35729,
+                // Change this to '0.0.0.0' to access the server from outside
+                hostname: 'localhost'
+            },
+            livereload: {
+                options: {
+                    open: true
+                }
             }
         }
     });
@@ -131,5 +152,10 @@ module.exports = function (grunt) {
 
     grunt.registerTask('image', 'compress PNGs', [
         'imagemin'
+    ]);
+
+    grunt.registerTask('serve', 'You want fries with that?', [
+        'connect:livereload',
+        'watch'
     ]);
 };
