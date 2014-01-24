@@ -146,6 +146,12 @@ DigitariaGenerator.prototype.sass = function () {
 	this.mkdir('css/sass/vendor');
 };
 
+DigitariaGenerator.prototype.js = function () {
+    this.mkdir('js');
+    this.mkdir('js/vendor');
+    this.copy('js/name.js', 'js/' + this.slugProjectName + '.js');
+};
+
 DigitariaGenerator.prototype.writeIndex = function writeIndex() {
     var sourceFileList = ['bower_components/jquery/jquery.js'];
 
@@ -160,18 +166,14 @@ DigitariaGenerator.prototype.writeIndex = function writeIndex() {
         sourceFileList.push('bower_components/handlebars/handlebars.min.js');
     }
 
+    sourceFileList.push('js/' + this.slugProjectName + '.js');
+
     this.indexFile = this.appendFiles({
         html: this.indexFile,
         fileType: 'js',
-        optimizedPath: 'scripts/name.js',
+        optimizedPath: 'js/' + this.slugProjectName + '.js',
         sourceFileList: sourceFileList
     });
 
     this.write('index.html', this.indexFile);
 };
-
-// DigitariaGenerator.prototype.js = function () {
-// 	this.mkdir('js');
-// 	this.mkdir('js/vendor');
-// 	this.copy('js/name.js', 'js/' + this.slugProjectName + '.js');
-// };

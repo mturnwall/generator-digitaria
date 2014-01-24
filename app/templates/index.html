@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title><% slugProjectName %></title>
+        <title><%= slugProjectName %></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -15,7 +15,7 @@
         <% if (includeModernizr) { %><script src="bower_components/modernizr/modernizr.js"></script><% } %>
     </head>
     <body>
-        <div class="hero-unit">
+        <div>
           <h1>Thank you for using generator-digitaria!</h1>
           <p>You now have</p>
           <ul>
@@ -25,5 +25,6 @@
             <% if (includeHandlebars) { %><li>Handlebars</li><% } %>
           </ul>
         </div>
+
     </body>
 </html>
