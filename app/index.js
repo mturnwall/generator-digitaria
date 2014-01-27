@@ -153,26 +153,27 @@ DigitariaGenerator.prototype.js = function () {
 };
 
 DigitariaGenerator.prototype.writeIndex = function writeIndex() {
-    var sourceFileList = ['bower_components/jquery/jquery.js'];
+    var sourceFileListArr = ['bower_components/jquery/jquery.js'];
 
     this.indexFile = this.readFileAsString(path.join(this.sourceRoot(), 'index.html'));
     this.indexFile = this.engine(this.indexFile, this);
 
     if (this.includeUniform) {
-        sourceFileList.push('bower_components/jquery.uniform/jquery.uniform.min.js');
+        sourceFileListArr.push('bower_components/jquery.uniform/jquery.uniform.min.js');
     }
 
     if (this.includeHandlebars) {
-        sourceFileList.push('bower_components/handlebars/handlebars.min.js');
+        sourceFileListArr.push('bower_components/handlebars/handlebars.min.js');
     }
 
-    sourceFileList.push('js/' + this.slugProjectName + '.js');
+    // this.indexFile = this.appendScripts(this.indexFile, 'scripts/plugins.js', sourceFileListArr)
+    sourceFileListArr.push('js/' + this.slugProjectName + '.js');
 
     this.indexFile = this.appendFiles({
         html: this.indexFile,
         fileType: 'js',
         optimizedPath: 'js/' + this.slugProjectName + '.js',
-        sourceFileList: sourceFileList
+        sourceFileList: sourceFileListArr
     });
 
     this.write('index.html', this.indexFile);
