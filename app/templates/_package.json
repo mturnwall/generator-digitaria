@@ -6,7 +6,6 @@
   "author": {
     "name": "Digitaria, Inc",
     "url": "http://www.digitaria.com"
-  },
   },<% if (repository) { %>
     "repository": {
         "type": "git",
