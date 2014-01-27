@@ -8,7 +8,7 @@ var DigitariaGenerator = module.exports = function DigitariaGenerator(args, opti
 	yeoman.generators.Base.apply(this, arguments);
 
 	this.on('end', function () {
-		this.installDependencies({ skipInstall: options['skip-install'] });
+		// this.installDependencies({ skipInstall: options['skip-install'] });
 	});
 
 	this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
@@ -79,9 +79,7 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 		this.projectName = props.projectName;
 		this.slugProjectName = this._.slugify(this.projectName);
 		this.version = props.version;
-		this.jqueryVersion = props.jqueryVersion;
 		this.repository = props.repository;
-		this.handlebars = props.handlebars;
 		this.projectType = props.projectType;
 
 		// find out which libraries to include

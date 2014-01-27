@@ -49,7 +49,7 @@ module.exports = function (grunt) {
         handlebars: {
             compile: {
                 options: {
-                    namespace: "Handlebars.templates",
+                    namespace: 'Handlebars.templates',
                     processName: function (filePath) {
                         return filePath.replace(/^js\/templates\//, '').replace('.handlebars', '');
                     },
@@ -62,7 +62,7 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-        },<% } %>
+        }, <% } %>
         imagemin: {
             png: {
                 options: {
