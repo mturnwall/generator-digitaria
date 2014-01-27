@@ -1,0 +1,31 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title><%= slugProjectName %></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css css/master.css -->
+        <link rel="stylesheet" href="css/master.css">
+        <!-- end build -->
+        <% if (includeModernizr) { %><script src="bower_components/modernizr/modernizr.js"></script><% } %>
+    </head>
+    <body>
+        <div>
+          <h1>Thank you for using generator-digitaria!</h1>
+          <p>You now have</p>
+          <ul>
+            <li>jQuery</li>
+            <% if (includeModernizr) { %><li>Modernizr</li><% } %>
+            <% if (includeUniform) { %><li>Uniform</li><% } %>
+            <% if (includeHandlebars) { %><li>Handlebars</li><% } %>
+          </ul>
+        </div>
+
+    </body>
+</html>

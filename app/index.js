@@ -53,12 +53,8 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 	}, {
 		type: 'checkbox',
 		name: 'libs',
-		message: 'Which libraries would you like to include?',
+		message: 'Along with jQuery, which libraries would you like to include?',
 		choices: [{
-			name: 'jQuery',
-			value: 'hasJquery',
-			checked: true
-		}, {
 			name: 'Modernizr',
 			value: 'hasModernizr',
 			checked: true
@@ -67,7 +63,7 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 			value: 'hasUniform',
 			checked: false
 		}, {
-			name: 'handlebars',
+			name: 'Handlebars.js',
 			value: 'hasHandlebars',
 			checked: false
 		}]
@@ -89,7 +85,7 @@ DigitariaGenerator.prototype.askFor = function askFor() {
 		this.projectType = props.projectType;
 
 		// find out which libraries to include
-		this.includeJquery = hasLibrary('hasJquery');
+		// this.includeJquery = hasLibrary('hasJquery');
 		this.includeModernizr = hasLibrary('hasModernizr');
 		this.includeUniform = hasLibrary('hasUniform');
 		this.includeHandlebars = hasLibrary('hasHandlebars');
@@ -150,8 +146,35 @@ DigitariaGenerator.prototype.sass = function () {
 	this.mkdir('css/sass/vendor');
 };
 
-// DigitariaGenerator.prototype.js = function () {
-// 	this.mkdir('js');
-// 	this.mkdir('js/vendor');
-// 	this.copy('js/name.js', 'js/' + this.slugProjectName + '.js');
-// };
+DigitariaGenerator.prototype.js = function () {
+    this.mkdir('js');
+    this.mkdir('js/vendor');
+    this.copy('js/name.js', 'js/' + this.slugProjectName + '.js');
+};
+
+DigitariaGenerator.prototype.writeIndex = function writeIndex() {
+    var sourceFileListArr = ['bower_components/jquery/jquery.js'];
+
+    this.indexFile = this.readFileAsString(path.join(this.sourceRoot(), 'index.html'));
+    this.indexFile = this.engine(this.indexFile, this);
+
+    if (this.includeUniform) {
+        sourceFileListArr.push('bower_components/jquery.uniform/jquery.uniform.min.js');
+    }
+
+    if (this.includeHandlebars) {
+        sourceFileListArr.push('bower_components/handlebars/handlebars.min.js');
+    }
+
+    // this.indexFile = this.appendScripts(this.indexFile, 'scripts/plugins.js', sourceFileListArr)
+    sourceFileListArr.push('js/' + this.slugProjectName + '.js');
+
+    this.indexFile = this.appendFiles({
+        html: this.indexFile,
+        fileType: 'js',
+        optimizedPath: 'js/' + this.slugProjectName + '.js',
+        sourceFileList: sourceFileListArr
+    });
+
+    this.write('index.html', this.indexFile);
+};
