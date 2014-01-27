@@ -45,7 +45,7 @@ module.exports = function (grunt) {
                     environment: 'production'
                 }
             }
-        },<% if (handlebars) { %>
+        },<% if (includeHandlebars) { %>
         handlebars: {
             compile: {
                 options: {
@@ -84,7 +84,7 @@ module.exports = function (grunt) {
             },
             build: {
                 files: [
-                    {src: ['js/tpr.js', 'js/product_*.js'], dest: 'build/js/<%= pkg.name %>-<%= pkg.version %>.js', nonull: true}
+                    {src: ['js/tpr.js', 'js/product_*.js'], dest: 'build/js/<%%= pkg.name %>-<%%= pkg.version %>.js', nonull: true}
                 ]
             }
         },
@@ -92,7 +92,7 @@ module.exports = function (grunt) {
             css: {
                 files: ['css/sass/**/*.scss'],
                 tasks: ['compass:dev']
-            },<% if (handlebars) { %>
+            },<% if (includeHandlebars) { %>
             handlebars: {
                 files: ['views/*.handlebars'],
                 tasks: ['handlebars:dev']
@@ -137,7 +137,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'jshint',
-        'compass:dev'<% if (handlebars) { %>,
+        'compass:dev'<% if (includeHandlebars) { %>,
         'handlebars'<% } %>
     ]);
 
