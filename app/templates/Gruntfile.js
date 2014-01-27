@@ -45,11 +45,11 @@ module.exports = function (grunt) {
                     environment: 'production'
                 }
             }
-        },<% if (handlebars) { %>
+        }, <% if (includeHandlebars) { %>
         handlebars: {
             compile: {
                 options: {
-                    namespace: "Handlebars.templates",
+                    namespace: 'Handlebars.templates',
                     processName: function (filePath) {
                         return filePath.replace(/^js\/templates\//, '').replace('.handlebars', '');
                     },
@@ -62,7 +62,7 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-        },<% } %>
+        }, <% } %>
         imagemin: {
             png: {
                 options: {
@@ -95,7 +95,7 @@ module.exports = function (grunt) {
             css: {
                 files: ['css/sass/**/*.scss'],
                 tasks: ['compass:dev']
-            },<% if (handlebars) { %>
+            },<% if (includeHandlebars) { %>
             handlebars: {
                 files: ['views/*.handlebars'],
                 tasks: ['handlebars:dev']
@@ -116,7 +116,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'jshint',
-        'compass:dev'<% if (handlebars) { %>,
+        'compass:dev'<% if (includeHandlebars) { %>,
         'handlebars'<% } %>
     ]);
 
