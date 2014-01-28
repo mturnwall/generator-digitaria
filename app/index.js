@@ -8,7 +8,7 @@ var DigitariaGenerator = module.exports = function DigitariaGenerator(args, opti
 	yeoman.generators.Base.apply(this, arguments);
 
 	this.on('end', function () {
-		// this.installDependencies({ skipInstall: options['skip-install'] });
+		this.installDependencies({ skipInstall: options['skip-install'] });
 	});
 
 	this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
@@ -170,7 +170,7 @@ DigitariaGenerator.prototype.writeIndex = function writeIndex() {
     this.indexFile = this.appendFiles({
         html: this.indexFile,
         fileType: 'js',
-        optimizedPath: 'js/' + this.slugProjectName + '.js',
+        optimizedPath: 'js/' + this.slugProjectName + '.min.js',
         sourceFileList: sourceFileListArr
     });
 
