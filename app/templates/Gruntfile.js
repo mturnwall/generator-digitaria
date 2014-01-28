@@ -4,17 +4,82 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        clean: {
-            build: ['build']
+
+        // Project settings
+        yeoman: {
+            // Configurable paths
+            app: 'app',
+            dist: 'build'
         },
+
+        /**
+         * grunt-contrib-clean - Clean files and folders.
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-clean
+         */
+        clean: {
+            build: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        '<%= yeoman.dist %>/*'
+                    ]
+                }]
+            },
+            staging: {
+                files: [{
+                    dot:true,
+                    src: [
+                        '<%= yeoman.dist %>/staging'
+                    ]
+                }]
+            }
+        },
+
+        /**
+         * grunt-contrib-copy - Copy files and folders.
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-copy
+         */
         copy: {
             build: {
                 files: [
                     {
                         expand: true,
-                        src: ['css/*.css', 'images/**/*', 'fonts/**/*', 'views/**/*.js'],
-                        dest: 'build'
+                        src: [
+                            '*.{ico,png,txt}',
+                            '.htaccess',
+                            '{,*/}*.html',
+                            'images/**/*',
+                            'fonts/**/*',
+                            'views/**/*.js'
+                        ],
+                        dest: '<%= yeoman.dist %>'
+                    }
+                ]
+            },
+            unminified: {
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['<%= yeoman.dist %>/staging/concat/css/**'],
+                        dest: '<%= yeoman.dist %>/css',
+                        filter: 'isFile',
+                        ext: '.css' // strips .min.js extension
                     },
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['<%= yeoman.dist %>/staging/concat/js/**'],
+                        dest: '<%= yeoman.dist %>/js',
+                        filter: 'isFile',
+                        options : {
+                            noProcess: '<%= yeoman.dist %>/staging/concat/js/modernizr.js'
+                        },
+                        ext: '.js' // strips .min.js extension
+                    }
                 ]
             }
         },
@@ -31,6 +96,12 @@ module.exports = function (grunt) {
             },
             files: ['js/tpr.js', 'js/product_*.js', 'js/**/*.js']
         },
+
+        /**
+         * grunt-contrib-compass - Compile Sass to CSS using Compass
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-compass
+         */
         compass: {
             options: {
                 config: 'config.rb',
@@ -63,6 +134,35 @@ module.exports = function (grunt) {
                 ]
             }
         }, <% } %>
+
+        /**
+         * grunt-usemin - Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).
+         * - Reads HTML for usemin blocks to enable smart builds that automatically concat, minify and (if using rev) revision files.
+         *
+         * @url     https://github.com/yeoman/grunt-usemin
+         */
+        useminPrepare: {
+            options: {
+                dest: '<%%= yeoman.dist %>',
+                staging: '<%= yeoman.dist %>/staging'
+            },
+            html: 'index.html'
+        },
+
+        // Performs rewrites based on the useminPrepare configuration
+        usemin: {
+            options: {
+                assetsDirs: ['<%%= yeoman.dist %>']
+            },
+            html: ['<%%= yeoman.dist %>/{,*/}*.html'],
+            css: ['<%%= yeoman.dist %>/styles/{,*/}*.css']
+        },
+
+        /**
+         * grunt-contrib-imagemin - Minify PNG, JPEG and GIF images
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-imagemin
+         */
         imagemin: {
             png: {
                 options: {
@@ -73,21 +173,38 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: 'images',
                         src: ['**/*.png'],
-                        dest: 'build/images'
+                        dest: '<%%= yeoman.dist %>/images'
                     }
                 ]
             }
         },
-        concat: {
-            options: {
-                separator: ';\n'
-            },
-            build: {
-                files: [
-                    {src: ['js/tpr.js', 'js/product_*.js'], dest: 'build/js/<%%= pkg.name %>-<%%= pkg.version %>.js', nonull: true}
-                ]
+
+        /**
+         * grunt-svgmin - Minify SVG using SVGO
+         *
+         * @url     https://github.com/sindresorhus/grunt-svgmin
+         */
+        svgmin: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<%%= yeoman.app %>/images',
+                    src: '{,*/}*.svg',
+                    dest: '<%%= yeoman.dist %>/images'
+                }]
             }
         },
+
+        // concat: {
+        //     options: {
+        //         separator: ';\n'
+        //     },
+        //     build: {
+        //         files: [
+        //             {src: ['js/tpr.js', 'js/product_*.js'], dest: 'build/js/<%%= pkg.name %>-<%%= pkg.version %>.js', nonull: true}
+        //         ]
+        //     }
+        // },
         watch: {
             css: {
                 files: ['css/sass/**/*.scss'],
@@ -125,15 +242,23 @@ module.exports = function (grunt) {
                     open: true
                 }
             }
+        },
+
+        /**
+         * grunt-concurrent - Run grunt tasks concurrently to speed up build process
+         *
+         * @url     https://github.com/sindresorhus/grunt-concurrent
+         */
+        concurrent: {
+            dist: [
+                'compass:build',
+                // 'copy:styles',
+                'imagemin',
+                'svgmin'
+            ]
         }
     });
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-    // grunt.loadNpmTasks('grunt-contrib-clean');
-    // grunt.loadNpmTasks('grunt-contrib-compass');
-    // grunt.loadNpmTasks('grunt-contrib-concat');
-    // grunt.loadNpmTasks('grunt-contrib-copy');
-    // grunt.loadNpmTasks('grunt-contrib-jshint');
-    // grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', [
         'jshint',
@@ -141,14 +266,39 @@ module.exports = function (grunt) {
         'handlebars'<% } %>
     ]);
 
-    grunt.registerTask('build', 'Production ready code', [
-        'clean',
-        'jshint',
-        'concat:build',
-        'compass:build',
-        'copy',
-        'imagemin'
+    grunt.registerTask('build', 'Production ready code', function(target) {
+        if (target === 'drupal') {
+            // TODO Drupal only tasks (no minify)
+            // grunt.task.run([]);
+        } else {
+            grunt.task.run([
+                'clean:build',
+                'jshint',
+                'useminPrepare',
+                'concurrent:dist',
+                'concat',
+                'cssmin',
+                'uglify',
+                'copy:build',
+                'usemin',
+                'unminified'
+            ]);
+        }
+    });
+
+    grunt.registerTask('unminified', [
+        'copy:unminified',
+        'clean:staging'
     ]);
+
+    // grunt.registerTask('build', 'Production ready code', [
+    //     'clean',
+    //     'jshint',
+    //     'concat:build',
+    //     'compass:build',
+    //     'copy',
+    //     'imagemin'
+    // ]);
 
     grunt.registerTask('image', 'compress PNGs', [
         'imagemin'
