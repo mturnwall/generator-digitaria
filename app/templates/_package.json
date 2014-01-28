@@ -7,10 +7,10 @@
     "name": "Digitaria, Inc",
     "url": "http://www.digitaria.com"
   },<% if (repository) { %>
-    "repository": {
-        "type": "git",
-        "url": "<%= repository %>"
-    },<% } %>
+  "repository": {
+    "type": "git",
+    "url": "<%= repository %>"
+  },<% } %>
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",
