@@ -86,6 +86,12 @@ module.exports = function (grunt) {
                 ]
             }
         },
+
+        /**
+         * grunt-contrib-jshint - Validate files with JSHint.
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-jshint
+         */
         jshint: {
             options: {
                 curly: true,
@@ -119,7 +125,14 @@ module.exports = function (grunt) {
                     environment: 'production'
                 }
             }
-        },<% if (includeHandlebars) { %>
+        },
+
+        /**
+         * grunt-contrib-handlebars - Precompile Handlebars templates to JST file.
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-handlebars
+         */
+        <% if (includeHandlebars) { %>
         handlebars: {
             compile: {
                 options: {
@@ -208,6 +221,12 @@ module.exports = function (grunt) {
         //         ]
         //     }
         // },
+
+        /**
+         * grunt-contrib-watch - Run predefined tasks whenever watched file patterns are added, changed or deleted.
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-watch
+         */
         watch: {
             css: {
                 files: ['css/sass/**/*.scss'],
@@ -232,7 +251,12 @@ module.exports = function (grunt) {
                 tasks: ['jshint']
             }
         },
-        // grunt server settings
+
+        /**
+         * grunt-contrib-connect - Start a connect web server.
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-connect
+         */
         connect: {
             options: {
                 port: 9000,
@@ -254,8 +278,6 @@ module.exports = function (grunt) {
          */
         concurrent: {
             dist: [
-                // 'compass:build',
-                // 'copy:styles',
                 'imagemin',
                 'svgmin'
             ]
