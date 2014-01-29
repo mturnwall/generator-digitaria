@@ -10,9 +10,11 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <!-- build:css css/master.css -->
+
+        <!-- build:css css/master.min.css -->
         <link rel="stylesheet" href="css/master.css">
-        <!-- end build -->
+        <!-- endbuild -->
+
         <% if (includeModernizr) { %><script src="bower_components/modernizr/modernizr.js"></script><% } %>
     </head>
     <body>
@@ -20,12 +22,11 @@
           <h1>Thank you for using generator-digitaria!</h1>
           <p>You now have</p>
           <ul>
-            <li>jQuery</li>
-            <% if (includeModernizr) { %><li>Modernizr</li><% } %>
-            <% if (includeUniform) { %><li>Uniform</li><% } %>
-            <% if (includeHandlebars) { %><li>Handlebars</li><% } %>
+            <li>jQuery</li><% if (includeModernizr) { %>
+            <li>Modernizr</li><% } %><% if (includeUniform) { %>
+            <li>Uniform</li><% } %><% if (includeHandlebars) { %>
+            <li>Handlebars</li><% } %>
           </ul>
         </div>
-
     </body>
 </html>
