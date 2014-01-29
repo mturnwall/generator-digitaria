@@ -2,6 +2,9 @@
 module.exports = function (grunt) {
     'use strict';
 
+    // Time how long tasks take. Can help when optimizing build times
+    require('time-grunt')(grunt);
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -23,7 +26,7 @@ module.exports = function (grunt) {
                     dot: true,
                     src: [
                         '.tmp',
-                        '<%= yeoman.dist %>/*'
+                        '<%%= yeoman.dist %>/*'
                     ]
                 }]
             },
@@ -31,7 +34,7 @@ module.exports = function (grunt) {
                 files: [{
                     dot:true,
                     src: [
-                        '<%= yeoman.dist %>/staging'
+                        '<%%= yeoman.dist %>/staging'
                     ]
                 }]
             }
@@ -55,7 +58,7 @@ module.exports = function (grunt) {
                             'fonts/**/*',
                             'views/**/*.js'
                         ],
-                        dest: '<%= yeoman.dist %>'
+                        dest: '<%%= yeoman.dist %>'
                     }
                 ]
             },
@@ -64,19 +67,19 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         flatten: true,
-                        src: ['<%= yeoman.dist %>/staging/concat/css/**'],
-                        dest: '<%= yeoman.dist %>/css',
+                        src: ['<%%= yeoman.dist %>/staging/concat/css/**'],
+                        dest: '<%%= yeoman.dist %>/css',
                         filter: 'isFile',
                         ext: '.css' // strips .min.js extension
                     },
                     {
                         expand: true,
                         flatten: true,
-                        src: ['<%= yeoman.dist %>/staging/concat/js/**'],
-                        dest: '<%= yeoman.dist %>/js',
+                        src: ['<%%= yeoman.dist %>/staging/concat/js/**'],
+                        dest: '<%%= yeoman.dist %>/js',
                         filter: 'isFile',
                         options : {
-                            noProcess: '<%= yeoman.dist %>/staging/concat/js/modernizr.js'
+                            noProcess: '<%%= yeoman.dist %>/staging/concat/js/modernizr.js'
                         },
                         ext: '.js' // strips .min.js extension
                     }
@@ -144,7 +147,7 @@ module.exports = function (grunt) {
         useminPrepare: {
             options: {
                 dest: '<%%= yeoman.dist %>',
-                staging: '<%= yeoman.dist %>/staging'
+                staging: '<%%= yeoman.dist %>/staging'
             },
             html: 'index.html'
         },
@@ -155,7 +158,7 @@ module.exports = function (grunt) {
                 assetsDirs: ['<%%= yeoman.dist %>']
             },
             html: ['<%%= yeoman.dist %>/{,*/}*.html'],
-            css: ['<%%= yeoman.dist %>/styles/{,*/}*.css']
+            css: ['<%%= yeoman.dist %>/css/{,*/}*.css']
         },
 
         /**
@@ -251,7 +254,7 @@ module.exports = function (grunt) {
          */
         concurrent: {
             dist: [
-                'compass:build',
+                // 'compass:build',
                 // 'copy:styles',
                 'imagemin',
                 'svgmin'
@@ -305,6 +308,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('serve', 'You want fries with that?', [
+        'compass:dev',
         'connect:livereload',
         'watch'
     ]);
