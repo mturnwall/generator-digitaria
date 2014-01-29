@@ -150,6 +150,11 @@ DigitariaGenerator.prototype.js = function () {
     this.copy('js/name.js', 'js/' + this.slugProjectName + '.js');
 };
 
+DigitariaGenerator.prototype.misc = function () {
+    this.mkdir('images');
+    this.mkdir('fonts');
+};
+
 DigitariaGenerator.prototype.writeIndex = function writeIndex() {
     var sourceFileListArr = ['bower_components/jquery/jquery.js'];
 
