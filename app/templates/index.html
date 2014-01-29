@@ -15,7 +15,9 @@
         <link rel="stylesheet" href="css/master.css">
         <!-- endbuild -->
 
-        <% if (includeModernizr) { %><script src="bower_components/modernizr/modernizr.js"></script><% } %>
+        <% if (includeModernizr) { %><!-- build:js js/modernizr.min.js -->
+        <script src="bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild --><% } %>
     </head>
     <body>
         <div>

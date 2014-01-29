@@ -11,7 +11,7 @@ module.exports = function (grunt) {
         // Project settings
         yeoman: {
             // Configurable paths
-            app: 'app',
+            app: '.',
             dist: 'build'
         },
 
@@ -223,6 +223,21 @@ module.exports = function (grunt) {
         // },
 
         /**
+         * grunt-modernizr - Build out a lean, mean Modernizr machine.
+         *
+         * @url     https://github.com/doctyper/grunt-modernizr
+         */
+        modernizr : {
+            devFile: '<%%= yeoman.app %>/bower_components/modernizr/modernizr.js',
+            outputFile: '<%%= yeoman.dist %>/js/modernizr.min.js',
+            files: [
+                '<%%= yeoman.dist %>/js/**/*.js',
+                '<%%= yeoman.dist %>/css/{,*/}*.css'
+            ],
+            uglify: true
+        },
+
+        /**
          * grunt-contrib-watch - Run predefined tasks whenever watched file patterns are added, changed or deleted.
          *
          * @url     https://github.com/gruntjs/grunt-contrib-watch
@@ -305,6 +320,7 @@ module.exports = function (grunt) {
                 'cssmin',
                 'uglify',
                 'copy:build',
+                'modernizr',
                 'usemin',
                 'unminified'
             ]);
