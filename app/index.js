@@ -8,7 +8,7 @@ var DigitariaGenerator = module.exports = function DigitariaGenerator(args, opti
 	yeoman.generators.Base.apply(this, arguments);
 
 	this.on('end', function () {
-		// this.installDependencies({ skipInstall: options['skip-install'] });
+		this.installDependencies({ skipInstall: options['skip-install'] });
 	});
 
 	this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
@@ -150,6 +150,11 @@ DigitariaGenerator.prototype.js = function () {
     this.copy('js/name.js', 'js/' + this.slugProjectName + '.js');
 };
 
+DigitariaGenerator.prototype.misc = function () {
+    this.mkdir('images');
+    this.mkdir('fonts');
+};
+
 DigitariaGenerator.prototype.writeIndex = function writeIndex() {
     var sourceFileListArr = ['bower_components/jquery/jquery.js'];
 
@@ -170,7 +175,7 @@ DigitariaGenerator.prototype.writeIndex = function writeIndex() {
     this.indexFile = this.appendFiles({
         html: this.indexFile,
         fileType: 'js',
-        optimizedPath: 'js/' + this.slugProjectName + '.js',
+        optimizedPath: 'js/' + this.slugProjectName + '.min.js',
         sourceFileList: sourceFileListArr
     });
 
