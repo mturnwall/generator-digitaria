@@ -23,7 +23,20 @@ describe('digitaria generator', function () {
         var expected = [
             // add files you expect to exist here.
             '.jshintrc',
-            '.editorconfig'
+            '.editorconfig',
+            'config.rb',
+            'bower.json',
+            'Gruntfile.js',
+            '.gitignore',
+            '.jshintrc',
+            '.editorconfig',
+            'css/sass/_base.scss',
+            'css/sass/_buttons.scss',
+            'css/sass/_forms.scss',
+            'css/sass/_typography.scss',
+            'css/sass/master.scss',
+            'js/.js',
+            'index.html'
         ];
 
         helpers.mockPrompt(this.app, {
