@@ -27,7 +27,11 @@ describe('digitaria generator', function () {
         ];
 
         helpers.mockPrompt(this.app, {
-            'someOption': true
+            'name': 'Hello World',
+            'version': '0.1.0',
+            'repository': '',
+            'projectType': 'isDrupal',
+            'libs': [ 'hasModernizr', 'hasUniform', 'hasHandlebars' ]
         });
         this.app.options['skip-install'] = true;
         this.app.run({}, function () {
