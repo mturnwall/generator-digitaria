@@ -1,4 +1,3 @@
-
 module.exports = function (grunt) {
     'use strict';
 
@@ -331,15 +330,6 @@ module.exports = function (grunt) {
         'copy:unminified',
         'clean:staging'
     ]);
-
-    // grunt.registerTask('build', 'Production ready code', [
-    //     'clean',
-    //     'jshint',
-    //     'concat:build',
-    //     'compass:build',
-    //     'copy',
-    //     'imagemin'
-    // ]);
 
     grunt.registerTask('image', 'compress PNGs', [
         'imagemin'
