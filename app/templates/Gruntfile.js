@@ -179,7 +179,7 @@ module.exports = function (grunt) {
         cssmin: {
             combine: {
                 files: {
-                    '<%= settings.dist %>/css/master.min.css': ['css/master.css']
+                    '<%= yeoman.dist %>/css/master.min.css': ['css/master.css']
                 }
             }
         },
