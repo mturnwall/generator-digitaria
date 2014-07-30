@@ -31,14 +31,18 @@ This will install the Grunt.js and Bower dependencies. You will also need to ins
 
 ###Compass
 
-This is as simple as installing a couple of Ruby gems.
+This is as simple as installing a couple of Ruby gems. To use the latest features of SASS you'll need to install the pre-release version of Compass by using the `--pre` switch
 
 1. $ gem update --system
-2. $ gem install compass
+2. $ gem install --pre compass
 
 ###Sass-globbing
 
-This is a ruby gem so you install with `gem install sass-globbing`, https://github.com/chriseppstein/sass-globbing
+This is a ruby gem so you install with `gem install sass-globbing`, https://github.com/chriseppstein/sass-globbing. Sass globbing allows you to import many sass or scss files in a single import statement.
+
+###Susy
+
+This is grid framework and needs to be installed as a gem `gem install susy`, http://susy.oddbird.net/
 
 ### Editorconfig
 

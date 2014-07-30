@@ -11,8 +11,48 @@ module.exports = function (grunt) {
         // Project settings
         yeoman: {
             // Configurable paths
-            app: '.',
+            app: '<%= configRbPath %>',
+            dev: 'dev',
             dist: 'build'
+        },
+
+        /**
+         * grunt-contrib-compass - Compile Sass to CSS using Compass
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-compass
+         */
+        autoprefixer: {
+            options: {
+                browsers: ['last 3 version', 'ie 8', 'ie 9']
+            },
+            all: {
+                files: [{
+                    expand: true,
+                    src: 'css/*.css',
+                    dest: ''
+                }]
+            }
+        },
+
+        /**
+         * grunt-bowercopy - Copy bower components into final locations
+         *
+         * @url     https://github.com/timmywil/grunt-bowercopy
+         */
+        bowercopy: {
+            options: {
+                srcPrefix: 'bower_components'
+            },
+            js: {
+                files: {
+                    'js/libs': ['jquery/dist/jquery.js', 'modernizr/modernizr.js', 'swipejs/swipe.js']
+                }
+            },
+            css: {
+                files: {
+                    'css': ['normalize-css/normalize.css']
+                }
+            }
         },
 
         /**
@@ -21,7 +61,7 @@ module.exports = function (grunt) {
          * @url     https://github.com/gruntjs/grunt-contrib-clean
          */
         clean: {
-            build: {
+            dist: {
                 files: [{
                     dot: true,
                     src: [
@@ -30,14 +70,63 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            staging: {
+            dev: {
                 files: [{
-                    dot:true,
+                    dot: true,
                     src: [
-                        '<%%= yeoman.dist %>/staging'
+                        '<%%= yeoman.dev %>'
                     ]
                 }]
             }
+        },
+
+        /**
+         * grunt-contrib-compass - Compile Sass to CSS using Compass
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-compass
+         */
+        compass: {
+            options: {
+                config: '<%%= yeoman.app %>/config.rb',
+            },
+            dev: {
+                options: {
+                    environment: 'development'
+                }
+            },
+            build: {
+                options: {
+                    environment: 'production'
+                }
+            }
+        },
+
+        /**
+         * grunt-concat - Concatenate files
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-concat
+         */
+        concat: {
+            dist: {
+                options: {
+                    separator: ';'
+                },
+                files: {
+                    '<%= yeoman.dist %>/js/libs.min.js': ['js/libs/*.js']
+                }
+            }
+        },
+
+        /**
+         * grunt-concurrent - Run grunt tasks concurrently to speed up build process
+         *
+         * @url     https://github.com/sindresorhus/grunt-concurrent
+         */
+        concurrent: {
+            dist: [
+                'imagemin',
+                'svgmin'
+            ]
         },
 
         /**
@@ -87,6 +176,28 @@ module.exports = function (grunt) {
             }
         },
 
+        cssmin: {
+            combine: {
+                files: {
+                    '<%= settings.dist %>/css/master.min.css': ['css/master.css']
+                }
+            }
+        },
+
+        /**
+         * grunt-env - Specify an ENV configuration as a task
+         *
+         * @url     https://github.com/jsoverson/grunt-env
+         */
+        env: {
+            dev: {
+                NODE_ENV: 'dev'
+            },
+            production: {
+                NODE_ENV: 'production'
+            }
+        },
+
         /**
          * grunt-contrib-jshint - Validate files with JSHint.
          *
@@ -106,73 +217,26 @@ module.exports = function (grunt) {
             files: ['js/tpr.js', 'js/product_*.js', 'js/**/*.js']
         },
 
-        /**
-         * grunt-contrib-compass - Compile Sass to CSS using Compass
-         *
-         * @url     https://github.com/gruntjs/grunt-contrib-compass
-         */
-        compass: {
-            options: {
-                config: 'config.rb',
-            },
-            dev: {
-                options: {
-                    environment: 'development'
-                }
-            },
-            build: {
-                options: {
-                    environment: 'production'
-                }
-            }
-        },
-
+        <% if (includeHandlebars) { %>
         /**
          * grunt-contrib-handlebars - Precompile Handlebars templates to JST file.
          *
          * @url     https://github.com/gruntjs/grunt-contrib-handlebars
          */
-        <% if (includeHandlebars) { %>
         handlebars: {
             compile: {
                 options: {
                     namespace: 'Handlebars.templates',
                     processName: function (filePath) {
-                        return filePath.replace(/^js\/templates\//, '').replace('.handlebars', '');
+                        return filePath.replace(/^js\/views\//, '').replace('.hbs', '');
                     },
                     wrapped: true
                 },
-                files: [
-                    {
-                        src: ['js/templates/*.handlebars'],
-                        dest: 'js/templates/all_templates.js'
-                    }
-                ]
+                src: ['<%%= yeoman.app %>/js/views/*.hbs'],
+                dest: '<%%= yeoman.app %>/js/views/all_templates.js'
             }
+        },
         }, <% } %>
-
-        /**
-         * grunt-usemin - Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).
-         * - Reads HTML for usemin blocks to enable smart builds that automatically concat, minify and (if using rev) revision files.
-         *
-         * @url     https://github.com/yeoman/grunt-usemin
-         */
-        useminPrepare: {
-            options: {
-                dest: '<%%= yeoman.dist %>',
-                staging: '<%%= yeoman.dist %>/staging'
-            },
-            html: 'index.html'
-        },
-
-        // Performs rewrites based on the useminPrepare configuration
-        usemin: {
-            options: {
-                assetsDirs: ['<%%= yeoman.dist %>']
-            },
-            html: ['<%%= yeoman.dist %>/{,*/}*.html'],
-            css: ['<%%= yeoman.dist %>/css/{,*/}*.css']
-        },
 
         /**
          * grunt-contrib-imagemin - Minify PNG, JPEG and GIF images
@@ -180,19 +244,29 @@ module.exports = function (grunt) {
          * @url     https://github.com/gruntjs/grunt-contrib-imagemin
          */
         imagemin: {
-            png: {
-                options: {
-                    optimizationLevel: 7
-                },
-                files: [
-                    {
-                        expand: true,
-                        cwd: 'images',
-                        src: ['**/*.png'],
-                        dest: '<%%= yeoman.dist %>/images'
-                    }
-                ]
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<%%= yeoman.app %>/images/',
+                    src: ['**/*.{png,jpg,gif}'],
+                    dest: '<%%= yeoman.app %>/images'
+                }]
             }
+        },
+
+        /**
+         * grunt-modernizr - Build out a lean, mean Modernizr machine.
+         *
+         * @url     https://github.com/doctyper/grunt-modernizr
+         */
+        modernizr : {
+            devFile: '<%%= yeoman.app %>/bower_components/modernizr/modernizr.js',
+            outputFile: '<%%= yeoman.dist %>/js/modernizr.min.js',
+            files: [
+                '<%%= yeoman.dist %>/js/**/*.js',
+                '<%%= yeoman.dist %>/css/{,*/}*.css'
+            ],
+            uglify: true
         },
 
         /**
@@ -211,58 +285,26 @@ module.exports = function (grunt) {
             }
         },
 
-        // concat: {
-        //     options: {
-        //         separator: ';\n'
-        //     },
-        //     build: {
-        //         files: [
-        //             {src: ['js/tpr.js', 'js/product_*.js'], dest: 'build/js/<%%= pkg.name %>-<%%= pkg.version %>.js', nonull: true}
-        //         ]
-        //     }
-        // },
-
-        /**
-         * grunt-modernizr - Build out a lean, mean Modernizr machine.
-         *
-         * @url     https://github.com/doctyper/grunt-modernizr
-         */
-        modernizr : {
-            devFile: '<%%= yeoman.app %>/bower_components/modernizr/modernizr.js',
-            outputFile: '<%%= yeoman.dist %>/js/modernizr.min.js',
-            files: [
-                '<%%= yeoman.dist %>/js/**/*.js',
-                '<%%= yeoman.dist %>/css/{,*/}*.css'
-            ],
-            uglify: true
-        },
-
         /**
          * grunt-contrib-watch - Run predefined tasks whenever watched file patterns are added, changed or deleted.
          *
          * @url     https://github.com/gruntjs/grunt-contrib-watch
          */
         watch: {
+            options: {
+                atBegin: true,
+                debounceDelay: 200
+            },
             css: {
                 files: ['css/sass/**/*.scss'],
-                tasks: ['compass:dev']
+                tasks: ['compass:dev', 'autoprefixer:all']
             },<% if (includeHandlebars) { %>
             handlebars: {
-                files: ['views/*.handlebars'],
-                tasks: ['handlebars:dev']
+                tasks: ['handlebars:compile'],
+                files: ['<%= handlebars.compile.src %>']
             },<% } %>
-            livereload: {
-                options: {
-                    livereload: '<%%= connect.options.livereload %>'
-                },
-                files: [
-                    '{,*/}*.html',
-                    '{,*/}*.css',
-                    'images/**/*.{gif,jpeg,jpg,png,svg,webp}'
-                ]
-            },
-            scripts: {
-                files: ['<%%= jshint.files %>'],
+            js: {
+                files: ['<%= jshint.files %>'],
                 tasks: ['jshint']
             }
         },
@@ -284,18 +326,6 @@ module.exports = function (grunt) {
                     open: true
                 }
             }
-        },
-
-        /**
-         * grunt-concurrent - Run grunt tasks concurrently to speed up build process
-         *
-         * @url     https://github.com/sindresorhus/grunt-concurrent
-         */
-        concurrent: {
-            dist: [
-                'imagemin',
-                'svgmin'
-            ]
         }
     });
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
@@ -327,22 +357,11 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('unminified', [
-        'copy:unminified',
-        'clean:staging'
-    ]);
-
-    // grunt.registerTask('build', 'Production ready code', [
-    //     'clean',
-    //     'jshint',
-    //     'concat:build',
-    //     'compass:build',
-    //     'copy',
-    //     'imagemin'
-    // ]);
-
-    grunt.registerTask('image', 'compress PNGs', [
-        'imagemin'
+    grunt.registerTask('dev', [
+        'env:dev',
+        'clean:dev',
+        'preprocess:dev',
+        'watch'
     ]);
 
     grunt.registerTask('serve', 'You want fries with that?', [

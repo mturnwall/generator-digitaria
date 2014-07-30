@@ -1,5 +1,6 @@
 {
     "curly": true,
+    "devel": true,
     "eqeqeq": true,
     "immed": true,
     "indent": 4,
@@ -9,11 +10,19 @@
     "sub": true,
     "trailing": true,
     "undef": true,
-    "unused": true,
+    "unused": false,
+    "browser": true,
     "globals": {
         "jQuery": true,
         "$": true,
-        "Handlebars": true
+        "Handlebars": true,
+        "document": true,
+        "debug": true,
+        "console": true,
+        "Modernizr": true,
+        "module": true,
+        "require": true,
+        "Swipe": true
     }
 }
 

@@ -1,9 +1,7 @@
-# Be sure this path matches the path to the digitaria_framework folder on your local copy of the project
-load '/Users/michael/Sites/projects/princeton/drupal/sites/all/themes/princeton/digitaria_framework'
-
 # Require any additional compass plugins here.
 # install sass-globbing from here https://github.com/chriseppstein/sass-globbing
 require 'sass-globbing'
+require 'susy'
 
 # Autoprefixer https://github.com/ai/autoprefixer
 # See install instructions under the Compass heading
