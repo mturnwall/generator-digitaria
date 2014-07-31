@@ -112,7 +112,7 @@ module.exports = function (grunt) {
                     separator: ';'
                 },
                 files: {
-                    '<%= yeoman.dist %>/js/libs.min.js': ['js/libs/*.js']
+                    '<%%= yeoman.dist %>/js/libs.min.js': ['js/libs/*.js']
                 }
             }
         },
@@ -179,7 +179,7 @@ module.exports = function (grunt) {
         cssmin: {
             combine: {
                 files: {
-                    '<%= yeoman.dist %>/css/master.min.css': ['css/master.css']
+                    '<%%= yeoman.dist %>/css/master.min.css': ['css/master.css']
                 }
             }
         },
@@ -298,13 +298,13 @@ module.exports = function (grunt) {
             css: {
                 files: ['css/sass/**/*.scss'],
                 tasks: ['compass:dev', 'autoprefixer:all']
-            },<% if (includeHandlebars) { %>
+            },
             handlebars: {
                 tasks: ['handlebars:compile'],
-                files: ['<%= handlebars.compile.src %>']
-            },<% } %>
+                files: ['<%%= handlebars.compile.src %>']
+            },
             js: {
-                files: ['<%= jshint.files %>'],
+                files: ['<%%= jshint.files %>'],
                 tasks: ['jshint']
             }
         },

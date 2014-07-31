@@ -117,6 +117,7 @@ DigitariaGenerator.prototype.bower = function () {
 
 DigitariaGenerator.prototype.gruntfile = function () {
 	this.template('Gruntfile.js', 'Gruntfile.js');
+    console.log('Gruntfile.js created');
 };
 
 DigitariaGenerator.prototype.git = function () {
@@ -146,7 +147,8 @@ DigitariaGenerator.prototype.sass = function () {
 
 DigitariaGenerator.prototype.js = function () {
     this.mkdir('js');
-    this.mkdir('js/vendor');
+    this.mkdir('js/libs');
+    this.mkdir('js/views');
     this.copy('js/name.js', 'js/' + this.slugProjectName + '.js');
 };
 
@@ -165,9 +167,9 @@ DigitariaGenerator.prototype.writeIndex = function writeIndex() {
         sourceFileListArr.push('bower_components/jquery.uniform/jquery.uniform.min.js');
     }
 
-    if (this.includeHandlebars) {
-        sourceFileListArr.push('bower_components/handlebars/handlebars.min.js');
-    }
+    // if (this.includeHandlebars) {
+    //     sourceFileListArr.push('bower_components/handlebars/handlebars.min.js');
+    // }
 
     // this.indexFile = this.appendScripts(this.indexFile, 'scripts/plugins.js', sourceFileListArr)
     sourceFileListArr.push('js/' + this.slugProjectName + '.js');
