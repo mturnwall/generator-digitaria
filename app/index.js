@@ -8,7 +8,12 @@ var DigitariaGenerator = module.exports = function DigitariaGenerator(args, opti
 	yeoman.generators.Base.apply(this, arguments);
 
 	this.on('end', function () {
-		this.installDependencies({ skipInstall: options['skip-install'] });
+		this.installDependencies({
+            skipInstall: options['skip-install'],
+            callback: function () {
+                this.spawnCommand('grunt', ['bowercopy']);
+            }.bind(this)
+        });
 	});
 
 	this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
@@ -160,8 +165,11 @@ DigitariaGenerator.prototype.misc = function () {
 DigitariaGenerator.prototype.writeIndex = function writeIndex() {
     var sourceFileListArr = ['bower_components/jquery/jquery.js'];
 
-    this.indexFile = this.readFileAsString(path.join(this.sourceRoot(), 'index.html'));
-    this.indexFile = this.engine(this.indexFile, this);
+    this.mkdir('templates');
+    this.directory('templates');
+
+    // this.indexFile = this.readFileAsString(path.join(this.sourceRoot(), 'index.html'));
+    // this.indexFile = this.engine(this.indexFile, this);
 
     if (this.includeUniform) {
         sourceFileListArr.push('bower_components/jquery.uniform/jquery.uniform.min.js');
@@ -174,12 +182,12 @@ DigitariaGenerator.prototype.writeIndex = function writeIndex() {
     // this.indexFile = this.appendScripts(this.indexFile, 'scripts/plugins.js', sourceFileListArr)
     sourceFileListArr.push('js/' + this.slugProjectName + '.js');
 
-    this.indexFile = this.appendFiles({
-        html: this.indexFile,
-        fileType: 'js',
-        optimizedPath: 'js/' + this.slugProjectName + '.min.js',
-        sourceFileList: sourceFileListArr
-    });
+    // this.indexFile = this.appendFiles({
+    //     html: this.indexFile,
+    //     fileType: 'js',
+    //     optimizedPath: 'js/' + this.slugProjectName + '.min.js',
+    //     sourceFileList: sourceFileListArr
+    // });
 
-    this.write('index.html', this.indexFile);
+    // this.write('index.html', this.indexFile);
 };

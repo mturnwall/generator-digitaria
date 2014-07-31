@@ -11,7 +11,7 @@ module.exports = function (grunt) {
         // Project settings
         yeoman: {
             // Configurable paths
-            app: '<%= configRbPath %>',
+            app: '.',
             dev: 'dev',
             dist: 'build'
         },
@@ -45,14 +45,18 @@ module.exports = function (grunt) {
             },
             js: {
                 files: {
-                    'js/libs': ['jquery/dist/jquery.js', 'modernizr/modernizr.js', 'swipejs/swipe.js']
-                }
-            },
-            css: {
-                files: {
-                    'css': ['normalize-css/normalize.css']
+                    'js/libs': [
+                        'jquery/dist/jquery.js'<% if (includeModernizr) { %>,
+                        'modernizr/modernizr.js'<% } %><% if (includeUniform) { %>,
+                        'jquery.uniform/jquery.uniform.js'<% } %>
+                    ]
                 }
             }
+            // css: {
+            //     files: {
+            //         'css': ['normalize-css/normalize.css']
+            //     }
+            // }
         },
 
         /**
@@ -94,7 +98,7 @@ module.exports = function (grunt) {
                     environment: 'development'
                 }
             },
-            build: {
+            dist: {
                 options: {
                     environment: 'production'
                 }
@@ -205,16 +209,9 @@ module.exports = function (grunt) {
          */
         jshint: {
             options: {
-                curly: true,
-                eqeqeq: true,
-                // quotmark: true,
-                unused: true,
-                globals: {
-                    jQuery: true
-                },
-                exported: ['trackingObj']
+                jshintrc: true
             },
-            files: ['js/tpr.js', 'js/product_*.js', 'js/**/*.js']
+            files: ['js/*.js']
         },
 
         <% if (includeHandlebars) { %>
@@ -235,7 +232,6 @@ module.exports = function (grunt) {
                 src: ['<%%= yeoman.app %>/js/views/*.hbs'],
                 dest: '<%%= yeoman.app %>/js/views/all_templates.js'
             }
-        },
         }, <% } %>
 
         /**
@@ -269,6 +265,31 @@ module.exports = function (grunt) {
             uglify: true
         },
 
+        preprocess: {
+            dev: {
+                options: {
+                    inline: true,
+                    context: {
+                        dev: true
+                    }
+                },
+                files: {
+                    '<%%= yeoman.dev %>/index.html': ['templates/index.tpl']
+                }
+            },
+            prod: {
+                options: {
+                    inline: true,
+                    context: {
+                        production: true
+                    }
+                },
+                files: {
+                    '<%%= yeoman.dist %>/index.html': ['templates/index.tpl']
+                }
+            }
+        },
+
         /**
          * grunt-svgmin - Minify SVG using SVGO
          *
@@ -286,6 +307,26 @@ module.exports = function (grunt) {
         },
 
         /**
+         * grunt-contrib-uglif - Minify files with UglifyJS
+         *
+         * @url     https://github.com/gruntjs/grunt-contrib-uglify
+         */
+        uglify: {
+            dist: {
+                options: {
+                    mangle: false,
+                    compress: {
+                        drop_console: true
+                    }
+                },
+                files: {
+                    '<%%= yeoman.dist %>/js/<%%= slugProjectName%>.min.js': ['js/*.js'],
+                    '<%%= yeoman.dist %>/js/libs.min.js': ['<%%= yeoman.dist %>/js/libs.min.js']
+                }
+            }
+        },
+
+        /**
          * grunt-contrib-watch - Run predefined tasks whenever watched file patterns are added, changed or deleted.
          *
          * @url     https://github.com/gruntjs/grunt-contrib-watch
@@ -297,15 +338,15 @@ module.exports = function (grunt) {
             },
             css: {
                 files: ['css/sass/**/*.scss'],
-                tasks: ['compass:dev', 'autoprefixer:all']
-            },
+                tasks: ['compass:dev', 'autoprefixer:all', 'build-css']
+            },<% if (includeHandlebars) { %>
             handlebars: {
                 tasks: ['handlebars:compile'],
                 files: ['<%%= handlebars.compile.src %>']
-            },
+            },<% } %>
             js: {
                 files: ['<%%= jshint.files %>'],
-                tasks: ['jshint']
+                tasks: ['jshint', 'build-js']
             }
         },
 
@@ -357,10 +398,22 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('dev', [
+    grunt.registerTask('build-css', [
+        'env:production',
+        'cssmin'
+    ]);
+
+    grunt.registerTask('build-js', [
+        'env:production',
+        'uglify:dist'
+    ]);
+
+    grunt.registerTask('start', 'Setup the files for dev and start a watch task', [
         'env:dev',
         'clean:dev',
         'preprocess:dev',
+        'preprocess:prod',
+        'concat:dist',
         'watch'
     ]);
 

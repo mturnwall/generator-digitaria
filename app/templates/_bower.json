@@ -10,9 +10,7 @@
   ],
   "dependencies": {<% if (includeUniform) { %>
     "jquery.uniform": "~2.1.2",<% } %><% if (includeModernizr) { %>
-    "modernizr": "~2.8.2",<% } %><% if (includeHandlebars) { %>
-    "handlebars": "~1.3.0",<% } %>
-    "swipejs": "~2.0",
+    "modernizr": "~2.8.2",<% } %>
     "jquery": "~1.11.1"
   }
 }
