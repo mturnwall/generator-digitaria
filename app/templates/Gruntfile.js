@@ -285,7 +285,7 @@ module.exports = function (grunt) {
                     }
                 },
                 files: {
-                    '<%%= yeoman.dist %>/index.html': ['templates/index.tpl']
+                    './index.html': ['templates/index.tpl']
                 }
             }
         },
