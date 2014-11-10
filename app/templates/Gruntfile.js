@@ -93,16 +93,9 @@ module.exports = function (grunt) {
          */
         jshint: {
             options: {
-                curly: true,
-                eqeqeq: true,
-                // quotmark: true,
-                unused: true,
-                globals: {
-                    jQuery: true
-                },
-                exported: ['trackingObj']
+                jshintrc: true
             },
-            files: ['js/tpr.js', 'js/product_*.js', 'js/**/*.js']
+            files: ['js/*.js']
         },
 
         /**
